@@ -1,5 +1,56 @@
 # clc3-2025-project-aghaei-fallmann-steininger
-Repository for the course project in CLC3, year 2025
+## Building a Monitor Dashboard for Real-Time Data Visualization
 
-## Project Proposal
-Please find our project proposal [here](docs/project_proposal.md).
+### Team Members 🧑🏻‍💻
+- Fatemeh Aghaei (s2410595019)
+- Lukas Fallmann (s2410595004)
+- Lukas Steininger (s2410595016)
+
+### Project Overview
+#### Objective 🎯
+
+> - What is the high level goal of your project?
+> - What will you newly build and develop? What does already exist?
+> - How does the high level architecture look like? Provide an architecture diagram.
+> - How does it relate to cloud computing? What cloud technologies will you use?
+
+##### High Level Goal
+Implement a real-time monitoring dashboard for a fictional ticket platform that visualizes network traffic and sales data and produces alerts if problems arise. Monitoring and alerting will be implemented using Prometheus and Grafana.
+Stress testing using the Python Locust library will be performed to show the functionality of the monitoring dashboard under high load.
+
+##### Newly built
+Using the Python FastAPI library, multiple API-endpoints will be implemented to create concerts and buy tickets.
+To simulate ticket purchases as close to reality as possible, a certain percentage of requests will be denied randomly to simulate failed transactions. 
+Requests will take varying amounts of time to process. 
+An additional bottleneck will be introduced by adding database to store concerts and ticket purchases.
+
+##### High level architecture
+The python FastAPI is executed in a containerized environment. 
+A different container running Prometheus will be used to scrape metrics from the FastAPI application and store them. 
+A third container running Grafana will be connected to Prometheus to visualize the metrics in a dashboard.
+All three container are running locally (**or should we use cloud vms at least?**) using Docker Compose for development purposes, since the focus of this project is on monitoring and visualization.
+The database that the FastAPI application connects to is hosted in the cloud.
+
+![architecture.png](./docs/data/architecture.png)
+##### Cloud computing relation
+The database used in this project is hosted in the cloud. Additionally, observability and monitoring are crucial aspects of cloud computing, and this project aims to demonstrate how to effectively monitor and visualize application performance.
+
+##### Milestones 🪨
+
+> - Break down the project into milestones, including team internal deadlines.
+
+| **Milestone** 	  | **Description**                                       	 | **Deadline** 	 |
+|------------------|---------------------------------------------------------|----------------|
+| 1             	  | Acceptance of the Proposal                            	 | 22.12.2025   	 |
+| 2             	  | Implementation of the backend code                    	 | 31.12.2025   	 |
+| 3             	  | Integration of Cloud hostes database                  	 | 9.1.2026     	 |
+| 4             	  | Instrumentation of Prometheus and Grafana             	 | 16.1.2026    	 |
+| 5             	  | Definition of final dashboard metrics and stress test 	 | 23.1.2026    	 |
+| 6             	  | Documentation (Reproducibility, ...)                  	 | 28.1.2026    	 |
+| 7                | Final presentation                                      | 2.2.2026       |
+
+#### Distribution of Work 🗄️
+
+> - Show us who will work on what parts
+
+**TODO:** please fill in

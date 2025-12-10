@@ -16,7 +16,7 @@
 #### High Level Goal
 Implement a real-time monitoring dashboard that visualizes network traffic and sales data of a fictional ticket platform using Python FastApi, Grafana and Prometheus. Additional stress testing using the Python Locust library will be performed to show the functionality of the monitoring dashboard under high load.
 
-#### Newly built
+#### Newly buidl
 Multiple API-endpoints to create concerts and buy tickets, 
 To simulate ticket purchases as close to reality as possible, a certain percentage of requests will be denied randomly to simulate failed transactions. and requests will take varying amounts of time to process. An additonal bottle neck will be provided by adding a database to store concerts and ticket purchases.
 
