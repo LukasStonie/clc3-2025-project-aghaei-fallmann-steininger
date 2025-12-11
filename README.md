@@ -54,3 +54,16 @@ The database used in this project is hosted in the cloud. Additionally, observab
 > - Show us who will work on what parts
 
 **TODO:** please fill in
+
+FA ... Fatemeh Aghaei\
+LF ... Lukas Fallmann\
+LS ... Lukas Steininger
+
+| **Work Package** | **Work Package Name** | **Person** | **Key Activities / Description**                                                                  | **Deliverables** | **Milestone** | **Deadline** |
+|:-----------------| :---|:-----------|:---------------------------------------------------------------------------------------------------| :--- | :--- | :--- |
+| **1**            | **Project Initiation & Planning**|            | • Requirement analysis & scoping<br>• Tech stack selection<br>• Proposal drafting                  | Approved Project Proposal | 1 | 22.12.2025 |
+| **2**            | **Core Backend Development**|            | • Repo & CI/CD setup<br>• API Endpoint implementation<br>• Business logic (using local DB)         | Functional Backend (Local) | 2 | 31.12.2025 |
+| **3**            | **Cloud Infra & Persistence**|            | • Provision Cloud Database<br>• Schema migration & data seeding<br>• Connect backend to Cloud Host | Cloud-Integrated Backend | 3 | 09.01.2026 |
+| **4**            | **Observability Setup**|            | • Code instrumentation (Metrics)<br>• Prometheus scraping config<br>• Grafana setup & data source | Live Grafana Dashboard | 4 | 16.01.2026 |
+| **5**            | **Testing, Validation & Tuning**|            | • Define critical metrics<br>• Execute Stress/Load tests<br>• Finalize dashboard views    | Stress Test Report & Final Dashboard | 5 | 23.01.2026 |
+| **6**            | **Documentation & Delivery**|            | • Write technical docs (Reproducibility)<br>• Create presentation slides<br>• Final Pitch | Technical Docs & Slide Deck | 6, 7 | 02.02.2026 |
