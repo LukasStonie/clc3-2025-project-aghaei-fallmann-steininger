@@ -28,12 +28,12 @@ An additional bottleneck will be introduced by adding database to store concerts
 The python FastAPI is executed in a containerized environment. 
 A different container running Prometheus will be used to scrape metrics from the FastAPI application and store them. 
 A third container running Grafana will be connected to Prometheus to visualize the metrics in a dashboard.
-All three container are running locally (**or should we use cloud vms at least?**) using Docker Compose for development purposes, since the focus of this project is on monitoring and visualization.
-The database that the FastAPI application connects to is hosted in the cloud.
+All three containers are deployed in the cloud using kubernetes.
+The database that the FastAPI application connects to is also hosted in the cloud.
 
 ![architecture.png](./docs/data/architecture.png)
 ##### Cloud computing relation
-The database used in this project is hosted in the cloud. Additionally, observability and monitoring are crucial aspects of cloud computing, and this project aims to demonstrate how to effectively monitor and visualize application performance.
+Observability and monitoring are crucial aspects of cloud computing, and this project aims to demonstrate how to effectively monitor and visualize application performance.
 
 ##### Milestones 🪨
 
@@ -42,8 +42,8 @@ The database used in this project is hosted in the cloud. Additionally, observab
 | **Milestone** 	  | **Description**                                       	 | **Deadline** 	 |
 |------------------|---------------------------------------------------------|----------------|
 | 1             	  | Acceptance of the Proposal                            	 | 22.12.2025   	 |
-| 2             	  | Implementation of the backend code                    	 | 31.12.2025   	 |
-| 3             	  | Integration of Cloud hostes database                  	 | 9.1.2026     	 |
+| 2             	  | Implementation of the backend code (FAST-API)                   	 | 31.12.2025   	 |
+| 3             	  | Integration of database                  	 | 9.1.2026     	 |
 | 4             	  | Instrumentation of Prometheus and Grafana             	 | 16.1.2026    	 |
 | 5             	  | Definition of final dashboard metrics and stress test 	 | 23.1.2026    	 |
 | 6             	  | Documentation (Reproducibility, ...)                  	 | 28.1.2026    	 |
@@ -53,17 +53,15 @@ The database used in this project is hosted in the cloud. Additionally, observab
 
 > - Show us who will work on what parts
 
-**TODO:** please fill in
-
 FA ... Fatemeh Aghaei\
 LF ... Lukas Fallmann\
 LS ... Lukas Steininger
 
 | **Work Package** | **Work Package Name** | **Person** | **Key Activities / Description**                                                                  | **Deliverables** | **Milestone** | **Deadline** |
 |:-----------------| :---|:-----------|:---------------------------------------------------------------------------------------------------| :--- | :--- | :--- |
-| **1**            | **Project Initiation & Planning**|            | • Requirement analysis & scoping<br>• Tech stack selection<br>• Proposal drafting                  | Approved Project Proposal | 1 | 22.12.2025 |
-| **2**            | **Core Backend Development**|            | • Repo & CI/CD setup<br>• API Endpoint implementation<br>• Business logic (using local DB)         | Functional Backend (Local) | 2 | 31.12.2025 |
-| **3**            | **Cloud Infra & Persistence**|            | • Provision Cloud Database<br>• Schema migration & data seeding<br>• Connect backend to Cloud Host | Cloud-Integrated Backend | 3 | 09.01.2026 |
+| **1**            | **Project Initiation & Planning**|   FA,LF,LS         | • Requirement analysis & scoping<br>• Tech stack selection<br>• Proposal drafting                  | Approved Project Proposal | 1 | 22.12.2025 |
+| **2**            | **Core Backend Development**|        LS    | • Repo & CI/CD setup<br>• API Endpoint implementation<br>• Business logic (using local DB)         | Functional Backend (Local) | 2 | 31.12.2025 |
+| **3**            | **Cloud Infra & Persistence**|        LF    | • Provision Cloud Database<br>• Schema migration & data seeding<br>• Connect backend to Cloud Host | Cloud-Integrated Backend | 3 | 09.01.2026 |
 | **4**            | **Observability Setup**|     FA    | • Code instrumentation (Metrics)<br>• Prometheus scraping config<br>• Grafana setup & data source | Live Grafana Dashboard | 4 | 16.01.2026 |
 | **5**            | **Testing, Validation & Tuning**|     FA       | • Define critical metrics<br>• Execute Stress/Load tests<br>• Finalize dashboard views    | Stress Test Report & Final Dashboard | 5 | 23.01.2026 |
-| **6**            | **Documentation & Delivery**|            | • Write technical docs (Reproducibility)<br>• Create presentation slides<br>• Final Pitch | Technical Docs & Slide Deck | 6, 7 | 02.02.2026 |
+| **6**            | **Documentation & Delivery**|    FA,LF,LS        | • Write technical docs (Reproducibility)<br>• Create presentation slides<br>• Final Pitch | Technical Docs & Slide Deck | 6, 7 | 02.02.2026 |
