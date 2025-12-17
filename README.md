@@ -18,6 +18,12 @@
 Implement a real-time monitoring dashboard for a fictional ticket platform that visualizes network traffic and sales data and produces alerts if problems arise. Monitoring and alerting will be implemented using Prometheus and Grafana.
 Stress testing using the Python Locust library will be performed to show the functionality of the monitoring dashboard under high load.
 
+The metrics that are observed are the number of requests, request duration, number of failed requests, CPU usage, and memory usage.
+Alerts will be configured to notify the team via email (or Discord) if the number of failed requests exceeds a certain threshold or if the request duration exceeds a certain limit.
+
+In the end, we will have a fully functional monitoring dashboard that can be used to monitor the performance of the ticket platform in real-time and alert the team in case of any issues.
+In the presentation, we will demonstrate the functionality of the monitoring dashboard under high load using stress testing.
+
 ##### Newly built
 Using the Python FastAPI library, multiple API-endpoints will be implemented to create concerts and buy tickets.
 To simulate ticket purchases as close to reality as possible, a certain percentage of requests will be denied randomly to simulate failed transactions. 
@@ -39,15 +45,15 @@ Observability and monitoring are crucial aspects of cloud computing, and this pr
 
 > - Break down the project into milestones, including team internal deadlines.
 
-| **Milestone** 	  | **Description**                                       	 | **Deadline** 	 |
-|------------------|---------------------------------------------------------|----------------|
-| 1             	  | Acceptance of the Proposal                            	 | 22.12.2025   	 |
-| 2             	  | Implementation of the backend code (FAST-API)                   	 | 31.12.2025   	 |
-| 3             	  | Integration of database                  	 | 9.1.2026     	 |
-| 4             	  | Instrumentation of Prometheus and Grafana             	 | 16.1.2026    	 |
-| 5             	  | Definition of final dashboard metrics and stress test 	 | 23.1.2026    	 |
-| 6             	  | Documentation (Reproducibility, ...)                  	 | 28.1.2026    	 |
-| 7                | Final presentation                                      | 2.2.2026       |
+| **Milestone** 	  | **Description**                                       	                                    | **Deadline** 	 |
+|------------------|--------------------------------------------------------------------------------------------|----------------|
+| 1             	  | Acceptance of the Proposal                            	                                    | 22.12.2025   	 |
+| 2             	  | Implementation of the backend code (FAST-API)                   	                          | 31.12.2025   	 |
+| 3             	  | Integration of database                  	                                                 | 9.1.2026     	 |
+| 4             	  | Instrumentation of Prometheus and Grafana including alerts and notifications             	 | 16.1.2026    	 |
+| 5             	  | Definition of final dashboard metrics and stress test 	                                    | 23.1.2026    	 |
+| 6             	  | Documentation (Reproducibility, ...)                  	                                    | 28.1.2026    	 |
+| 7                | Final presentation                                                                         | 2.2.2026       |
 
 #### Distribution of Work 🗄️
 
@@ -57,11 +63,11 @@ FA ... Fatemeh Aghaei\
 LF ... Lukas Fallmann\
 LS ... Lukas Steininger
 
-| **Work Package** | **Work Package Name** | **Person** | **Key Activities / Description**                                                                  | **Deliverables** | **Milestone** | **Deadline** |
-|:-----------------| :---|:-----------|:---------------------------------------------------------------------------------------------------| :--- | :--- | :--- |
-| **1**            | **Project Initiation & Planning**|   FA,LF,LS         | • Requirement analysis & scoping<br>• Tech stack selection<br>• Proposal drafting                  | Approved Project Proposal | 1 | 22.12.2025 |
-| **2**            | **Core Backend Development**|        LS    | • Repo & CI/CD setup<br>• API Endpoint implementation<br>• Business logic (using local DB)         | Functional Backend (Local) | 2 | 31.12.2025 |
-| **3**            | **Cloud Infra & Persistence**|        LF    | • Provision Cloud Database<br>• Schema migration & data seeding<br>• Connect backend to Cloud Host | Cloud-Integrated Backend | 3 | 09.01.2026 |
-| **4**            | **Observability Setup**|     FA    | • Code instrumentation (Metrics)<br>• Prometheus scraping config<br>• Grafana setup & data source | Live Grafana Dashboard | 4 | 16.01.2026 |
-| **5**            | **Testing, Validation & Tuning**|     FA       | • Define critical metrics<br>• Execute Stress/Load tests<br>• Finalize dashboard views    | Stress Test Report & Final Dashboard | 5 | 23.01.2026 |
-| **6**            | **Documentation & Delivery**|    FA,LF,LS        | • Write technical docs (Reproducibility)<br>• Create presentation slides<br>• Final Pitch | Technical Docs & Slide Deck | 6, 7 | 02.02.2026 |
+| **Work Package** | **Work Package Name** | **Person** | **Key Activities / Description**                                                                                                            | **Deliverables** | **Milestone** | **Deadline** |
+|:-----------------| :---|:-----------|:--------------------------------------------------------------------------------------------------------------------------------------------| :--- | :--- | :--- |
+| **1**            | **Project Initiation & Planning**|   FA,LF,LS         | • Requirement analysis & scoping<br>• Tech stack selection<br>• Proposal drafting                                                           | Approved Project Proposal | 1 | 22.12.2025 |
+| **2**            | **Core Backend Development**|        LS    | • Repo & CI/CD setup<br>• API Endpoint implementation<br>• Business logic (using local DB)                                                  | Functional Backend (Local) | 2 | 31.12.2025 |
+| **3**            | **Cloud Infra & Persistence**|        LF    | • Provision Cloud Database<br>• Schema migration & data seeding<br>• Connect backend to Cloud Host                                          | Cloud-Integrated Backend | 3 | 09.01.2026 |
+| **4**            | **Observability Setup**|     FA    | • Code instrumentation (Metrics)<br>• Prometheus scraping config<br>• Grafana setup & data source<br>• Definition of Alerts & Notifications | Live Grafana Dashboard | 4 | 16.01.2026 |
+| **5**            | **Testing, Validation & Tuning**|     FA       | • Define critical metrics<br>• Execute Stress/Load tests<br>• Finalize dashboard views                                                      | Stress Test Report & Final Dashboard | 5 | 23.01.2026 |
+| **6**            | **Documentation & Delivery**|    FA,LF,LS        | • Write technical docs (Reproducibility)<br>• Create presentation slides<br>• Final Pitch                                                   | Technical Docs & Slide Deck | 6, 7 | 02.02.2026 |
