@@ -362,7 +362,7 @@ geventhttpclient==2.3.5 \
     --hash=sha256:e8926ac5338764cabcf8fb54be706a6533d45756f164940a7568b03c80adb1f8 \
     --hash=sha256:ee48b9cdde46f4c1e4609f9ba7e4a4096f0447bb5e07ddd531b3bb67461cc4e2
     # via locust
-greenlet==3.2.4 ; platform_python_implementation == 'CPython' \
+greenlet==3.2.4 ; platform_machine == 'AMD64' or platform_machine == 'WIN32' or platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'ppc64le' or platform_machine == 'win32' or platform_machine == 'x86_64' or platform_python_implementation == 'CPython' \
     --hash=sha256:00fadb3fedccc447f517ee0d3fd8fe49eae949e1cd0f6a611818f4f6fb7dc83b \
     --hash=sha256:015d48959d4add5d6c9f6c5210ee3803a830dce46356e3bc326d6776bde54681 \
     --hash=sha256:061dc4cf2c34852b052a8620d40f36324554bc192be474b9e9770e8c042fd735 \
@@ -395,7 +395,9 @@ greenlet==3.2.4 ; platform_python_implementation == 'CPython' \
     --hash=sha256:e37ab26028f12dbb0ff65f29a8d3d44a765c61e729647bf2ddfbbed621726f01 \
     --hash=sha256:ee7a6ec486883397d70eec05059353b8e83eca9168b9f3f9a361971e77e0bcd0 \
     --hash=sha256:f28588772bb5fb869a8eb331374ec06f24a83a9c25bfa1f38b6993afe9c1e968
-    # via gevent
+    # via
+    #   gevent
+    #   sqlalchemy
 h11==0.16.0 \
     --hash=sha256:4e35b956cf45792e4caa5885e69fba00bdbc6ffafbfa020300e549b208ee5ff1 \
     --hash=sha256:63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86
@@ -670,6 +672,12 @@ psutil==7.1.3 \
     # via
     #   clc3-2025-project-aghaei-fallmann-steininger
     #   locust
+psycopg2==2.9.11 \
+    --hash=sha256:8dc379166b5b7d5ea66dcebf433011dfc51a7bb8a5fc12367fa05668e5fc53c8 \
+    --hash=sha256:964d31caf728e217c697ff77ea69c2ba0865fa41ec20bb00f0977e62fdcc52e3 \
+    --hash=sha256:e03e4a6dbe87ff81540b434f2e5dc2bddad10296db5eea7bdc995bf5f4162938 \
+    --hash=sha256:f10a48acba5fe6e312b891f290b4d2ca595fc9a06850fe53320beac353575578
+    # via clc3-2025-project-aghaei-fallmann-steininger
 pycparser==2.23 ; (implementation_name == 'pypy' and platform_python_implementation != 'CPython') or (implementation_name != 'PyPy' and platform_python_implementation == 'CPython' and sys_platform == 'win32') or (implementation_name == 'pypy' and sys_platform != 'win32') \
     --hash=sha256:78816d4f24add8f10a06d6f05b4d424ad9e96cfebf68a4ddc99c65c0720d00c2 \
     --hash=sha256:e5c6e8d3fbad53479cab09ac03729e0a9faf2bee3db8208a550daf5af81a5934
@@ -954,6 +962,39 @@ simple-websocket==1.1.0 \
     --hash=sha256:4af6069630a38ed6c561010f0e11a5bc0d4ca569b36306eb257cd9a192497c8c \
     --hash=sha256:7939234e7aa067c534abdab3a9ed933ec9ce4691b0713c78acb195560aa52ae4
     # via python-engineio
+sqlalchemy==2.0.46 \
+    --hash=sha256:2347c3f0efc4de367ba00218e0ae5c4ba2306e47216ef80d6e31761ac97cb0b9 \
+    --hash=sha256:33e462154edb9493f6c3ad2125931e273bbd0be8ae53f3ecd1c161ea9a1dd366 \
+    --hash=sha256:37fee2164cf21417478b6a906adc1a91d69ae9aba8f9533e67ce882f4bb1de53 \
+    --hash=sha256:3a9a72b0da8387f15d5810f1facca8f879de9b85af8c645138cba61ea147968c \
+    --hash=sha256:3c32e993bc57be6d177f7d5d31edb93f30726d798ad86ff9066d75d9bf2e0b6b \
+    --hash=sha256:412f26bb4ba942d52016edc8d12fb15d91d3cd46b0047ba46e424213ad407bcb \
+    --hash=sha256:42a1643dc5427b69aca967dae540a90b0fbf57eaf248f13a90ea5930e0966863 \
+    --hash=sha256:4dafb537740eef640c4d6a7c254611dca2df87eaf6d14d6a5fca9d1f4c3fc0fa \
+    --hash=sha256:4f52f7291a92381e9b4de9050b0a65ce5d6a763333406861e33906b8aa4906bf \
+    --hash=sha256:56bdd261bfd0895452006d5316cbf35739c53b9bb71a170a331fa0ea560b2ada \
+    --hash=sha256:64901e08c33462acc9ec3bad27fc7a5c2b6491665f2aa57564e57a4f5d7c52ad \
+    --hash=sha256:70ed2830b169a9960193f4d4322d22be5c0925357d82cbf485b3369893350908 \
+    --hash=sha256:77f8071d8fbcbb2dd11b7fd40dedd04e8ebe2eb80497916efedba844298065ef \
+    --hash=sha256:82ec52100ec1e6ec671563bbd02d7c7c8d0b9e71a0723c72f22ecf52d1755330 \
+    --hash=sha256:8d3b44b3d0ab2f1319d71d9863d76eeb46766f8cf9e921ac293511804d39813f \
+    --hash=sha256:8d679b5f318423eacb61f933a9a0f75535bfca7056daeadbf6bd5bcee6183aee \
+    --hash=sha256:8e84b09a9b0f19accedcbeff5c2caf36e0dd537341a33aad8d680336152dc34e \
+    --hash=sha256:9094c8b3197db12aa6f05c51c05daaad0a92b8c9af5388569847b03b1007fb1b \
+    --hash=sha256:93a12da97cca70cea10d4b4fc602589c4511f96c1f8f6c11817620c021d21d00 \
+    --hash=sha256:96c7cca1a4babaaf3bfff3e4e606e38578856917e52f0384635a95b226c87764 \
+    --hash=sha256:9bcdce05f056622a632f1d44bb47dbdb677f58cad393612280406ce37530eb6d \
+    --hash=sha256:a1e8cc6cc01da346dc92d9509a63033b9b1bda4fed7a7a7807ed385c7dccdc10 \
+    --hash=sha256:af865c18752d416798dae13f83f38927c52f085c52e2f32b8ab0fef46fdd02c2 \
+    --hash=sha256:b1e14b2f6965a685c7128bd315e27387205429c2e339eeec55cb75ca4ab0ea2e \
+    --hash=sha256:b2a9f9aee38039cf4755891a1e50e1effcc42ea6ba053743f452c372c3152b1b \
+    --hash=sha256:cf36851ee7219c170bb0793dbc3da3e80c582e04a5437bc601bfe8c85c9216d7 \
+    --hash=sha256:db23b1bf8cfe1f7fda19018e7207b20cdb5168f83c437ff7e95d19e39289c447 \
+    --hash=sha256:e8ac45e8f4eaac0f9f8043ea0e224158855c6a4329fd4ee37c45c61e3beb518e \
+    --hash=sha256:ea3cd46b6713a10216323cda3333514944e510aa691c945334713fca6b5279ff \
+    --hash=sha256:f9c11766e7e7c0a2767dda5acb006a118640c9fc0a4104214b96269bfb78399e \
+    --hash=sha256:ff33c6e6ad006bbc0f34f5faf941cfc62c45841c64c0a058ac38c799f15b5ede
+    # via clc3-2025-project-aghaei-fallmann-steininger
 starlette==0.50.0 \
     --hash=sha256:9e5391843ec9b6e472eed1365a78c8098cfceb7a74bfd4d6b1c0c0095efb3bca \
     --hash=sha256:a2a17b22203254bcbc2e1f926d2d55f3f9497f769416b3190768befe598fa3ca
@@ -973,6 +1014,7 @@ typing-extensions==4.15.0 \
     #   pydantic
     #   pydantic-core
     #   rich-toolkit
+    #   sqlalchemy
     #   starlette
     #   typer
     #   typing-inspection

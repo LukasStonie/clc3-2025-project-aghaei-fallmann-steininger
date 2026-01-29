@@ -6,7 +6,12 @@ from pydantic import BaseModel
 from prometheus_client import Counter, Histogram, Gauge, generate_latest
 import time, psutil
 
+#from sqlalchemy.orm import Session
 
+#from . import models
+#from . import database
+
+#models.Base.metadata.create_all(bind=database.engine)
 
 class TicketPurchase(BaseModel):
     user_id: str
@@ -17,6 +22,20 @@ class Concert(BaseModel):
     date: str
     venue: str
     number_of_tickets: int
+
+
+# # In your FastAPI route:
+# def buy_ticket(concert_id: int, db: Session):
+#     sold_count = db.query(models.TicketPurchase).filter(models.TicketPurchase.concert_id == concert_id).count()
+#
+#     concert = db.query(models.Concert).filter(models.Concert.id == concert_id).first()
+#
+#     if sold_count < concert.total_capacity:
+#         new_ticket = models.TicketPurchase(concert_id=concert_id, user_email="")
+#         db.add(new_ticket)
+#         db.commit()
+#     else:
+#         return "Sold out!"
 app = FastAPI()
 
 REQUEST_COUNT = Counter("http_requests_total", "Total HTTP requests", ["method", "endpoint", "status"])
