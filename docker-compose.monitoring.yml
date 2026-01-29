@@ -1,0 +1,71 @@
+version: '3'
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=200h'
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+    restart: unless-stopped
+  db:
+    image: postgres:15
+    container_name: ticket-db-bottleneck
+    restart: always
+    environment:
+      POSTGRES_USER: myadmin
+      POSTGRES_PASSWORD: MyComplexPassword123!
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"  # Allows you to connect from your laptop (localhost:5432)
+    # The resource limits that create your "Bottleneck"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'    # Limited to 25% of one CPU core
+          memory: 256M
+    # Healthcheck ensures FastAPI waits until DB is actually ready
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U myadmin -d postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. Your FastAPI Application
+  web:
+    build: .
+    container_name: ticket-system-web
+    command: uvicorn api_endpoints:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    environment:
+      # Notice the host is 'db', matching the service name above
+      DATABASE_URL: postgresql://myadmin:MyComplexPassword123!@db:5432/postgres
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+
+volumes:
+  prometheus_data:
+  grafana_data:
