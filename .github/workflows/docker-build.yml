@@ -1,0 +1,34 @@
+name: Build and Push Web Container
+
+on:
+  push:
+    branches:
+      - main  # Runs whenever you push to the 'main' branch
+  workflow_dispatch: # Allows you to run this manually from the Actions tab
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Web Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile  # Ensure this points to your Dockerfile
+          target: runtime     # Matches the 'target: runtime' from your compose file
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/ticket-web:latest
+            ${{ secrets.DOCKER_USERNAME }}/ticket-web:${{ github.sha }}
