@@ -37,4 +37,4 @@ class ConcertUser(HttpUser):
 
         # Use the name parameter to keep your Grafana dashboard clean
         self.client.post(
-            f"/buy/{concert_id}", json=payload, name="/buy/[id]")
+            f"/buy_random_deny/{concert_id}", json=payload, name="/buy_random_deny/[id]")

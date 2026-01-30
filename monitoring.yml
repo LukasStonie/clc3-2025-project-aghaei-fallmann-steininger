@@ -93,10 +93,26 @@ spec:
         volumeMounts:
         - name: grafana-storage
           mountPath: /var/lib/grafana
+        # --- Provisioning Files (Mapped to subdirectories) ---
         - name: grafana-provisioning
-          mountPath: /etc/grafana/provisioning
+          mountPath: /etc/grafana/provisioning/datasources/prometheus.yml
+          subPath: prometheus-ds
+        - name: grafana-provisioning
+          mountPath: /etc/grafana/provisioning/alerting/contact-points.yml
+          subPath: contact-points
+        - name: grafana-provisioning
+          mountPath: /etc/grafana/provisioning/alerting/alert-rules.yml
+          subPath: alerting-rules
+        - name: grafana-provisioning
+          mountPath: /etc/grafana/provisioning/alerting/policies.yml
+          subPath: policies
+        - name: grafana-provisioning
+          mountPath: /etc/grafana/provisioning/dashboards/dashboard.yml
+          subPath: dashboard-provider
+        # --- JSON Dashboard ---
         - name: grafana-dashboards
-          mountPath: /var/lib/grafana/dashboards
+          mountPath: /var/lib/grafana/dashboards/app-monitoring.json
+          subPath: app-monitoring.json
       volumes:
       - name: grafana-storage
         emptyDir: {} # Use PVC for real production data

@@ -1,17 +1,18 @@
 import random
 import time
-import psutil
-import numpy as np
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Request, Response, HTTPException, Depends
+import numpy as np
+import psutil
+from fastapi import Depends, FastAPI, HTTPException, Request, Response
 from fastapi.responses import JSONResponse
+from prometheus_client import Counter, Gauge, Histogram, generate_latest
 from pydantic import BaseModel
-from prometheus_client import Counter, Histogram, Gauge, generate_latest
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 # Assuming database.py has a 'get_db' generator and 'engine'
-from . import models, database
+from . import database, models
 
 
 # --- 1. Lifespan for Table Initialization ---
@@ -40,8 +41,10 @@ class ConcertSchema(BaseModel):
 app = FastAPI(lifespan=lifespan)
 
 # Metrics setup (Unchanged)
-REQUEST_COUNT = Counter("http_requests_total", "Total HTTP requests", ["method", "endpoint", "status"])
-REQUEST_DURATION = Histogram("request_duration_seconds", "Request duration in seconds")
+REQUEST_COUNT = Counter("http_requests_total", "Total HTTP requests", [
+                        "method", "endpoint", "status"])
+REQUEST_DURATION = Histogram(
+    "request_duration_seconds", "Request duration in seconds")
 CPU_USAGE = Gauge("cpu_usage_percent", "CPU usage percent")
 MEMORY_USAGE = Gauge("memory_usage_percent", "Memory usage percent")
 
@@ -51,25 +54,26 @@ async def metrics_middleware(request: Request, call_next):
     start_time = time.time()
     response = await call_next(request)
     duration = time.time() - start_time
-    REQUEST_COUNT.labels(request.method, request.url.path, str(response.status_code)).inc()
+    REQUEST_COUNT.labels(request.method, request.url.path,
+                         str(response.status_code)).inc()
     REQUEST_DURATION.observe(duration)
     return response
 
 
 # --- 4. Logic Extraction ---
 # I moved the logic inside the route to make sure it actually runs
-from sqlalchemy import func
 
 
 def process_purchase(concert_id: int, purchase: TicketPurchaseSchema, db: Session):
     # 1. Calculate how many tickets are already sold
     # .scalar() returns None if no tickets are sold, so we use 'or 0' to fix that
     sold_count = db.query(func.sum(models.TicketPurchase.quantity)) \
-                     .filter(models.TicketPurchase.concert_id == concert_id) \
-                     .scalar() or 0
+        .filter(models.TicketPurchase.concert_id == concert_id) \
+        .scalar() or 0
 
     # 2. Get the concert to check its max capacity
-    concert = db.query(models.Concert).filter(models.Concert.id == concert_id).first()
+    concert = db.query(models.Concert).filter(
+        models.Concert.id == concert_id).first()
 
     if not concert:
         return False
@@ -98,7 +102,8 @@ def process_purchase(concert_id: int, purchase: TicketPurchaseSchema, db: Sessio
 @app.post("/buy_random_deny/{concert_id}")
 def buy_tickets_failing(
         concert_id: int,
-        purchase: TicketPurchaseSchema,  # Use Pydantic Schema here, not models.TicketPurchase
+        # Use Pydantic Schema here, not models.TicketPurchase
+        purchase: TicketPurchaseSchema,
         db: Session = Depends(database.get_db)  # Inject DB Session
 ):
     try:
@@ -109,7 +114,8 @@ def buy_tickets_failing(
             return JSONResponse(status_code=409, content={"message": "Tickets currently unavailable"})
 
         # Simulate delay
-        time_to_sleep = np.random.randint(1, 5)  # Reduced to 5 for testing speed
+        # Reduced to 5 for testing speed
+        time_to_sleep = np.random.randint(1, 5)
         time.sleep(time_to_sleep)
 
         # Example of actually using the DB (optional)
@@ -122,16 +128,19 @@ def buy_tickets_failing(
     except Exception as e:
         print(e)
         return JSONResponse(status_code=500, content={"message": str(e)})
+
 
 @app.post("/buy/{concert_id}")
 def buy_tickets(
         concert_id: int,
-        purchase: TicketPurchaseSchema,  # Use Pydantic Schema here, not models.TicketPurchase
+        # Use Pydantic Schema here, not models.TicketPurchase
+        purchase: TicketPurchaseSchema,
         db: Session = Depends(database.get_db)  # Inject DB Session
 ):
     try:
         # Simulate delay
-        time_to_sleep = np.random.randint(1, 5)  # Reduced to 5 for testing speed
+        # Reduced to 5 for testing speed
+        time_to_sleep = np.random.randint(1, 5)
         time.sleep(time_to_sleep)
 
         # Example of actually using the DB (optional)
@@ -144,6 +153,7 @@ def buy_tickets(
     except Exception as e:
         print(e)
         return JSONResponse(status_code=500, content={"message": str(e)})
+
 
 @app.post("/concerts/new")
 def create_concert(
@@ -187,6 +197,7 @@ def get_all_available_concerts(db: Session = Depends(database.get_db)):
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
+
 
 @app.get("/metrics")
 def metrics():

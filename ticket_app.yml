@@ -102,7 +102,7 @@ spec:
       containers:
       - name: web
         # REPLACE THIS with the image you pushed in Step 1
-        image: lfallmann/ticket-web:6a69ecf
+        image: lfallmann/ticket-web:bebfcb5
         ports:
         - containerPort: 8000
         env:
