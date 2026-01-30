@@ -3,8 +3,8 @@ name: Build and Push Web Container
 on:
   push:
     branches:
-      - main  # Runs whenever you push to the 'main' branch
-  workflow_dispatch: # Allows you to run this manually from the Actions tab
+      - main
+  workflow_dispatch:
 
 jobs:
   build-and-push:
@@ -12,6 +12,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
+      # --- NEW STEP: Calculate Short SHA ---
+      - name: Set Short SHA
+        run: echo "SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -26,9 +30,10 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./Dockerfile  # Ensure this points to your Dockerfile
-          target: runtime     # Matches the 'target: runtime' from your compose file
+          file: ./Dockerfile
+          target: runtime
           push: true
+          # Use the env variable we created above
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/ticket-web:latest
-            ${{ secrets.DOCKER_USERNAME }}/ticket-web:${{ github.sha }}
+            ${{ secrets.DOCKER_USERNAME }}/ticket-web:${{ env.SHORT_SHA }}
