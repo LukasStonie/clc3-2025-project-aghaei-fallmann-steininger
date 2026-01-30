@@ -16,7 +16,6 @@ RUN pip install --no-cache-dir uv==${UV_VERSION}
 RUN rm -f /etc/apt/sources.list.d/yarn.list \
     && apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends \
-        git \
         build-essential \
         libssl-dev \
         libffi-dev \
@@ -52,12 +51,6 @@ ENV VIRTUAL_ENV=/workspace/.venv \
 # Copy the rest of the application code
 COPY --chown=$USERNAME:$USERNAME . .
 
-# install az console
-RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-
-# install kubectl
-RUN sudo az aks install-cli
-
 
 # Default command
 CMD ["/bin/bash"]
@@ -65,3 +58,25 @@ CMD ["/bin/bash"]
 FROM base AS runtime
 
 CMD ["uvicorn", "clc3_project.backend.api_endpoints:app", "--host", "0.0.0.0", "--port", "8000"]
+
+FROM base AS devcontainer
+
+# 1. Switch to root to perform system installs
+USER root
+
+# 2. Now this block will succeed because we are root
+RUN rm -f /etc/apt/sources.list.d/yarn.list \
+    && apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install --no-install-recommends \
+        git \
+        curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# 3. These commands are fine as root, or you can drop sudo if you are root
+# (Since we are root now, 'sudo' isn't strictly necessary, but won't hurt)
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+RUN az aks install-cli
+
+# 4. Switch back to non-root user so the terminal starts as vscode
+USER vscode
