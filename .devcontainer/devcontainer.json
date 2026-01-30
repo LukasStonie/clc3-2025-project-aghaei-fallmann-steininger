@@ -1,0 +1,52 @@
+{
+  "name": "Python with uv",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "containerEnv": {
+    // "DISPLAY": "host.docker.internal:0.0",
+    // "LIBGL_ALWAYS_INDIRECT": "1"
+  },
+  "features": {
+    // // 1. Installs CUDA & cuDNN (drivers must be on host machine)
+    // "ghcr.io/devcontainers/features/nvidia-cuda:1": {
+    //   "installCudnn": true
+    // },
+    // // Optional: Keeps common utilities
+    // "ghcr.io/devcontainers/features/common-utils:2": {}
+  },
+  // Configure tool-specific properties
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.languageServer": "Pylance",
+        "python.formatting.provider": "black",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true,
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.organizeImports": "explicit"
+        }
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.black-formatter",
+        "charliermarsh.ruff"
+      ]
+    }
+  },
+  // Use 'forwardPorts' to make a list of ports inside the container available locally
+  "forwardPorts": [],
+  // Use 'postCreateCommand' to run commands after the container is created
+  "postCreateCommand": "uv --version && python --version",
+  // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root
+  "remoteUser": "vscode",
+  // Add GPU support
+  "runArgs": [
+    // "--gpus",
+    // "all"
+  ]
+}
