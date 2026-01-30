@@ -1,0 +1,60 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: fastapi-alerts
+      folder: monitoring-alerts
+      interval: 1m
+      rules:
+        - uid: cfbpv02oj7j7kb
+          title: High FastAPI Failure Rate
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: PBFA97CFB590B2093
+              model:
+                editorMode: code
+                expr: "sum(rate(http_requests_total{status=~\"[45]..\"}[5m]))\r\n/\r\nsum(rate(http_requests_total[5m]))\r\n* 100"
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 2
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          keepFiringFor: 1m
+          annotations:
+            description: The server responded with error status codes exceeding the acceptable limit for more than 1 minute.
+            summary: FastAPI failure rate is above threshold
+          isPaused: false
+          notification_settings:
+            receiver: 'Discord-Notifications'

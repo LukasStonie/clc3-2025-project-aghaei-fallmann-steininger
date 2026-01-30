@@ -5,6 +5,14 @@ scrape_configs:
   - job_name: 'ticket_system'
     scrape_interval: 5s
     static_configs:
-      # In K8s, use the Service Name 'ticket-web' and the Service Port '80'
-      # (Use 80 because your Service maps port 80 -> targetPort 8000)
       - targets: ['ticket-web:80']
+
+#scrape_configs:
+#  - job_name: 'prometheus'
+#    static_configs:
+#      - targets: ['localhost:9090']
+#
+#  - job_name: 'fastapi-app'
+#    static_configs:
+#      - targets: ['host.docker.internal:8000']
+#    scrape_interval: 5s

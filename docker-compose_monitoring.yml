@@ -35,7 +35,8 @@ services:
       POSTGRES_DB: postgres
     ports:
       - "5432:5432"  # Allows you to connect from your laptop (localhost:5432)
-    # The resource limits that create your "Bottleneck"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
     deploy:
       resources:
         limits:
@@ -67,3 +68,4 @@ services:
 volumes:
   prometheus_data:
   grafana_data:
+  postgres_data:

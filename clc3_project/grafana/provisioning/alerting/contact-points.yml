@@ -1,0 +1,21 @@
+apiVersion: 1
+contactPoints:
+  - orgId: 1
+    name: 'grafana-default-email'
+    receivers:
+      - uid: 'default_email_receiver' # Moved inside receivers
+        type: email
+        settings:
+          addresses: 's2410595016@fhooe.at'
+          singleEmail: true
+  - orgId: 1
+    name: 'Discord-Notifications'
+    receivers:
+      - uid: 'discord_alert_receiver' # Moved inside receivers
+        type: discord
+        settings:
+          url: 'https://discord.com/api/webhooks/1466838354145316925/EneSyH-WbHYhrPY54OJscf-4JcUj7O60KlAIpDDErlMSU7oVjtsC39TVZIxbT373IUMc'
+          message: |
+            @everyone 
+            **Alert:** {{ .CommonAnnotations.summary }}
+            **Details:** {{ .CommonAnnotations.description }}

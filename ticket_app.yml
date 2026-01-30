@@ -39,6 +39,10 @@ spec:
           value: "postgres"
         ports:
         - containerPort: 5432
+        volumeMounts: # 1. Mount the volume into the container
+          - name: postgres-storage
+            mountPath: /var/lib/postgresql/data
+            subPath: postgres-db-data
         resources:
           limits:
             cpu: "0.25"    # 25% CPU bottleneck
@@ -49,7 +53,22 @@ spec:
             command: ["pg_isready", "-U", "myadmin", "-d", "postgres"]
           initialDelaySeconds: 5
           periodSeconds: 5
-
+      volumes: # 2. Define the volume at the Pod level
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+---
+# Persistent Volume Claim for Postgres
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi  # Adjust the size as needed
 ---
 # 3. Web App Service (Expose to Internet)
 apiVersion: v1
@@ -90,3 +109,10 @@ spec:
         # Note: 'db' here refers to the Service name defined at the top
         - name: DATABASE_URL
           value: "postgresql://myadmin:MyComplexPassword123!@db:5432/postgres"
+
+        readinessProbe:
+          httpGet:
+            path: /health  # Or whatever health endpoint you have
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 5
