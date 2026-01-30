@@ -16,7 +16,6 @@ RUN pip install --no-cache-dir uv==${UV_VERSION}
 RUN rm -f /etc/apt/sources.list.d/yarn.list \
     && apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends \
-        git \
         build-essential \
         libssl-dev \
         libffi-dev \
@@ -52,12 +51,6 @@ ENV VIRTUAL_ENV=/workspace/.venv \
 # Copy the rest of the application code
 COPY --chown=$USERNAME:$USERNAME . .
 
-# install az console
-RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-
-# install kubectl
-RUN sudo az aks install-cli
-
 
 # Default command
 CMD ["/bin/bash"]
@@ -65,3 +58,19 @@ CMD ["/bin/bash"]
 FROM base AS runtime
 
 CMD ["uvicorn", "clc3_project.backend.api_endpoints:app", "--host", "0.0.0.0", "--port", "8000"]
+
+FROM base AS devcontainer
+
+RUN rm -f /etc/apt/sources.list.d/yarn.list \
+    && apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install --no-install-recommends \
+        git \
+        curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# install az console
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+# install kubectl
+RUN sudo az aks install-cli
