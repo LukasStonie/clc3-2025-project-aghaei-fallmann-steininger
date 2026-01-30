@@ -2,7 +2,7 @@ import os
 from sqlalchemy import create_engine
 
 # This pulls the string you defined in docker-compose
-DATABASE_URL = "postgresql://myadmin:MyComplexPassword123!@db:5432/postgres"#os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(DATABASE_URL)
 from sqlalchemy.ext.declarative import declarative_base

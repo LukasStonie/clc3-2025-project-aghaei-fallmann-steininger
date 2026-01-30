@@ -6,12 +6,12 @@ from pydantic import BaseModel
 from prometheus_client import Counter, Histogram, Gauge, generate_latest
 import time, psutil
 
-#from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session
 
-#from . import models
-#from . import database
+from . import models
+from . import database
 
-#models.Base.metadata.create_all(bind=database.engine)
+models.Base.metadata.create_all(bind=database.engine)
 
 class TicketPurchase(BaseModel):
     user_id: str
@@ -24,18 +24,18 @@ class Concert(BaseModel):
     number_of_tickets: int
 
 
-# # In your FastAPI route:
-# def buy_ticket(concert_id: int, db: Session):
-#     sold_count = db.query(models.TicketPurchase).filter(models.TicketPurchase.concert_id == concert_id).count()
-#
-#     concert = db.query(models.Concert).filter(models.Concert.id == concert_id).first()
-#
-#     if sold_count < concert.total_capacity:
-#         new_ticket = models.TicketPurchase(concert_id=concert_id, user_email="")
-#         db.add(new_ticket)
-#         db.commit()
-#     else:
-#         return "Sold out!"
+# In your FastAPI route:
+def buy_ticket(concert_id: int, db: Session):
+    sold_count = db.query(models.TicketPurchase).filter(models.TicketPurchase.concert_id == concert_id).count()
+
+    concert = db.query(models.Concert).filter(models.Concert.id == concert_id).first()
+
+    if sold_count < concert.total_capacity:
+        new_ticket = models.TicketPurchase(concert_id=concert_id, user_email="")
+        db.add(new_ticket)
+        db.commit()
+    else:
+        return "Sold out!"
 app = FastAPI()
 
 REQUEST_COUNT = Counter("http_requests_total", "Total HTTP requests", ["method", "endpoint", "status"])
@@ -54,7 +54,7 @@ async def metrics_middleware(request: Request, call_next):
     return response
 
 @app.post("/buy/{concert_id}")
-def buy_tickets(concert_id: int, purchase: TicketPurchase):
+def buy_tickets(concert_id: int, purchase: models.TicketPurchase):
 
     deny = np.random.randint(low=0, high=1000)
 
@@ -68,7 +68,7 @@ def buy_tickets(concert_id: int, purchase: TicketPurchase):
     return {"concert_id": concert_id, "quantity": purchase.quantity, "status": "success"}
 
 @app.post("/concerts/new")
-def create_concert(Concert: Concert):
+def create_concert(Concert: models.Concert):
     # Simulate concert creation logic
     return {"title": Concert.title, "status": "created"}
 
