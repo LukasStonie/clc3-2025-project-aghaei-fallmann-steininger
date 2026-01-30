@@ -1,0 +1,92 @@
+# 1. Database Service (Networking)
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: ticket-db
+  type: ClusterIP # Internal only
+
+---
+# 2. Database Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticket-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticket-db
+  template:
+    metadata:
+      labels:
+        app: ticket-db
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        env:
+        - name: POSTGRES_USER
+          value: "myadmin"
+        - name: POSTGRES_PASSWORD
+          value: "MyComplexPassword123!"
+        - name: POSTGRES_DB
+          value: "postgres"
+        ports:
+        - containerPort: 5432
+        resources:
+          limits:
+            cpu: "0.25"    # 25% CPU bottleneck
+            memory: "256Mi"
+        # Kubernetes Readiness Probe (Replaces healthcheck)
+        readinessProbe:
+          exec:
+            command: ["pg_isready", "-U", "myadmin", "-d", "postgres"]
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
+---
+# 3. Web App Service (Expose to Internet)
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticket-web
+spec:
+  type: LoadBalancer  # Creates a public IP on Azure
+  ports:
+    - port: 80
+      targetPort: 8000
+  selector:
+    app: ticket-web
+
+---
+# 4. Web App Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticket-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticket-web
+  template:
+    metadata:
+      labels:
+        app: ticket-web
+    spec:
+      containers:
+      - name: web
+        # REPLACE THIS with the image you pushed in Step 1
+        image: lfallmann/ticket-web:6a69ecf
+        ports:
+        - containerPort: 8000
+        env:
+        # Note: 'db' here refers to the Service name defined at the top
+        - name: DATABASE_URL
+          value: "postgresql://myadmin:MyComplexPassword123!@db:5432/postgres"
