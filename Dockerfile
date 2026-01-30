@@ -22,6 +22,7 @@ RUN rm -f /etc/apt/sources.list.d/yarn.list \
         libffi-dev \
         python3-dev \
         libqt5widgets5 \
+        curl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -50,6 +51,12 @@ ENV VIRTUAL_ENV=/workspace/.venv \
 
 # Copy the rest of the application code
 COPY --chown=$USERNAME:$USERNAME . .
+
+# install az console
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+# install kubectl
+RUN sudo az aks install-cli
 
 
 # Default command
