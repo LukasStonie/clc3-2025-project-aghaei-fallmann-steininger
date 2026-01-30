@@ -1,8 +1,9 @@
 {
   "name": "Python with uv",
   "build": {
-    "dockerfile": "Dockerfile",
-    "context": ".."
+    "dockerfile": "../Dockerfile",
+    "context": "..",
+    "target": "base"
   },
   "containerEnv": {
     // "DISPLAY": "host.docker.internal:0.0",
