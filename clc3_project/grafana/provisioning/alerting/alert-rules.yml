@@ -32,7 +32,7 @@ groups:
                 expression: A
                 type: threshold
                 refId: C
-          noDataState: NoData
+          noDataState: OK
           execErrState: Error
           for: 1m
           keepFiringFor: 1m
