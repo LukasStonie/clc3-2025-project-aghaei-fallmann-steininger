@@ -148,5 +148,10 @@ az aks start --name TicketWatcher-Cluster --resource-group TicketSystemResourceG
 az aks stop --name TicketWatcher-Cluster --resource-group TicketSystemResourceGroup
 ```
 
+### Scaling pods
+
+```bash
+kubectl scale deployment <your-deployment-name> --replicas=N
+```
 
 
