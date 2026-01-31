@@ -84,14 +84,21 @@ Once you have done this, you need to apply these changes:
 kubectl apply -f ticket_app.yml
 ```
 
+Additionaly, you need to create secrets. These secrets are referenced in the Kubernetes files. We need to create a secret that holds the database connection string and another secret that stores the Discord webhook for the alert notification.
+
 ```bash
 kubectl create secret generic db-credentials \
-  --from-literal=db-url="postgresql://myadmin:MyComplexPassword123!@db:5432/postgres"
+  --from-literal=db-url='postgresql://myadmin:MyComplexPassword123!@db:5432/postgres'
 ```
 
 ```bash
 kubectl create secret generic grafana-secrets \
-  --from-literal=discord-webhook="https://discord.com/api/webhooks/your-id/your-token"
+  --from-literal=discord-webhook="https://discord.com/api/webhooks/1466838354145316925/EneSyH-WbHYhrPY54OJscf-4JcUj7O60KlAIpDDErlMSU7oVjtsC39TVZIxbT373IUMc"
+```
+
+If you want to update a secret, you have to delete it first and execute the commands from above again with the altered value.
+```bash
+kubectl delete secrets <SECRET_NAME>
 ```
 
 After applying, you can restart the rollouts
