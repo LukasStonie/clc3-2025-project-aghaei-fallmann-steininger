@@ -18,7 +18,7 @@ This pipeline includes the following steps:
 - :latest (for the most recent stable version)
 - :${SHORT_SHA} (for specific version tracking and rollbacks).
 
-## Deployment Steps
+## Continous Deleivery
 Open the project in the devcontainer (if not already done), so that all requried dependencies are available.
 
 ### Login to Azure
@@ -82,6 +82,16 @@ Once you have done this, you need to apply these changes:
 
 ```bash
 kubectl apply -f ticket_app.yml
+```
+
+```bash
+kubectl create secret generic db-credentials \
+  --from-literal=db-url="postgresql://myadmin:MyComplexPassword123!@db:5432/postgres"
+```
+
+```bash
+kubectl create secret generic grafana-secrets \
+  --from-literal=discord-webhook="https://discord.com/api/webhooks/your-id/your-token"
 ```
 
 After applying, you can restart the rollouts

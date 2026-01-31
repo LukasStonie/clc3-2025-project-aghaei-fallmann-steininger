@@ -14,7 +14,7 @@ contactPoints:
       - uid: 'discord_alert_receiver' # Moved inside receivers
         type: discord
         settings:
-          url: 'https://discord.com/api/webhooks/1466838354145316925/EneSyH-WbHYhrPY54OJscf-4JcUj7O60KlAIpDDErlMSU7oVjtsC39TVZIxbT373IUMc'
+          url: ${DISCORD_URL}
           message: |
             @everyone 
             **Alert:** {{ .CommonAnnotations.summary }}

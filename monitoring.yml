@@ -90,6 +90,11 @@ spec:
           value: "admin"
         - name: GF_SECURITY_ADMIN_PASSWORD
           value: "admin123"
+        - name: DISCORD_URL # This is the variable Grafana will use
+          valueFrom:
+            secretKeyRef:
+              name: grafana-secrets
+              key: discord-webhook
         volumeMounts:
         - name: grafana-storage
           mountPath: /var/lib/grafana

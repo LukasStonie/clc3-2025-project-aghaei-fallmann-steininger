@@ -108,7 +108,10 @@ spec:
         env:
         # Note: 'db' here refers to the Service name defined at the top
         - name: DATABASE_URL
-          value: "postgresql://myadmin:MyComplexPassword123!@db:5432/postgres"
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials  # The name of your Secret
+              key: db-url           # The key inside the Secret
 
         readinessProbe:
           httpGet:
