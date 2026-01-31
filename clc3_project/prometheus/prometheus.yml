@@ -3,6 +3,7 @@ global:
 
 scrape_configs:
   - job_name: 'ticket_system'
+    metrics_path: '/metrics'
     scrape_interval: 5s
     static_configs:
       - targets: ['ticket-web:80']
@@ -13,6 +14,7 @@ scrape_configs:
 #      - targets: ['localhost:9090']
 #
 #  - job_name: 'fastapi-app'
+#    metrics_path: '/metrics'
 #    static_configs:
 #      - targets: ['host.docker.internal:8000']
 #    scrape_interval: 5s
