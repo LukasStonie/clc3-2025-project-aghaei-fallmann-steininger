@@ -24,6 +24,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - DISCORD_URL=https://discord.com/api/webhooks/1466838354145316925/EneSyH-WbHYhrPY54OJscf-4JcUj7O60KlAIpDDErlMSU7oVjtsC39TVZIxbT373IUMc
     restart: unless-stopped
   db:
     image: postgres:15

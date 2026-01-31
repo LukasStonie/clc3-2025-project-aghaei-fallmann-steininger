@@ -196,7 +196,7 @@ def get_all_available_concerts(db: Session = Depends(database.get_db)):
 
 @app.get("/health")
 def health_check():
-    return {"status": "ok"}
+    return Response(content="", media_type="text/plain")
 
 
 @app.get("/metrics")

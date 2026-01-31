@@ -16,38 +16,22 @@ groups:
               datasourceUid: PBFA97CFB590B2093
               model:
                 editorMode: code
-                expr: "sum(rate(http_requests_total{status=~\"[45]..\"}[5m]))\r\n/\r\nsum(rate(http_requests_total[5m]))\r\n* 100"
+                expr: "sum(rate(http_requests_total{status=~\"[4]..\"}[1m])) / sum(rate(http_requests_total[5m])) * 100"
                 instant: true
                 intervalMs: 1000
-                legendFormat: __auto
-                maxDataPoints: 43200
-                range: false
                 refId: A
             - refId: C
               datasourceUid: __expr__
               model:
                 conditions:
-                    - evaluator:
-                        params:
-                            - 2
-                        type: gt
-                      operator:
-                        type: and
-                      query:
-                        params:
-                            - C
-                      reducer:
-                        params: []
-                        type: last
+                    - evaluator: { params: [2], type: gt }
+                      operator: { type: and }
+                      query: { params: [C] }
+                      reducer: { params: [], type: last }
                       type: query
-                datasource:
-                    type: __expr__
-                    uid: __expr__
                 expression: A
-                intervalMs: 1000
-                maxDataPoints: 43200
-                refId: C
                 type: threshold
+                refId: C
           noDataState: NoData
           execErrState: Error
           for: 1m
@@ -56,5 +40,42 @@ groups:
             description: The server responded with error status codes exceeding the acceptable limit for more than 1 minute.
             summary: FastAPI failure rate is above threshold
           isPaused: false
+          notification_settings:
+            receiver: 'Discord-Notifications'
+
+        # --- New Rule: Service Down (Liveness) ---
+        - uid: instance_down_001
+          title: FastAPI Instance Down
+          condition: B
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: PBFA97CFB590B2093
+              model:
+                editorMode: code
+                expr: "up{job=\"fastapi-app\"}"
+                instant: true
+                intervalMs: 1000
+                refId: A
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator: { params: [1], type: lt } # Trigger if 'up' is less than 1 (i.e., 0)
+                      operator: { type: and }
+                      query: { params: [B] }
+                      reducer: { params: [], type: last }
+                      type: query
+                expression: A
+                type: threshold
+                refId: B
+          noDataState: Alerting # If Prometheus can't even find the metric, treat it as an alert
+          execErrState: Error
+          for: 1m # Wait 1 minute (one extra check) to confirm it's actually down
+          annotations:
+            description: Prometheus is unable to scrape the FastAPI instance. The service might be crashed or the container is down.
+            summary: FastAPI server is unreachable
           notification_settings:
             receiver: 'Discord-Notifications'
