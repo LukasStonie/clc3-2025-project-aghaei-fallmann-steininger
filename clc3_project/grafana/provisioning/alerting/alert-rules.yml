@@ -16,7 +16,7 @@ groups:
               datasourceUid: PBFA97CFB590B2093
               model:
                 editorMode: code
-                expr: "sum(rate(http_requests_total{status=~\"[4]..\"}[1m])) / sum(rate(http_requests_total[5m])) * 100"
+                expr: "sum(rate(http_requests_total{status=~\"[4]..\"}[1m])) / sum(rate(http_requests_total[1m])) * 100"
                 instant: true
                 intervalMs: 1000
                 refId: A
