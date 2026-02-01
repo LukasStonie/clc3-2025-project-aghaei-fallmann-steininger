@@ -18,31 +18,8 @@ This pipeline includes the following steps:
 - :latest (for the most recent stable version)
 - :${SHORT_SHA} (for specific version tracking and rollbacks).
 
-## Continous Deleivery
-Open the project in the devcontainer (if not already done), so that all requried dependencies are available.
+## Configuration
 
-### Login to Azure
-```bash
-az login
-```
-The browser opens up at the first time so you can log into you Microsoft account. After that, press enter in the console.
-
-### Change the subscription (if necessarry)
-If the resource group is not yours, and you have only been given access to it, you need to change the subscription. For that execute the following commands:
-
-```bash
-az account list --output table
-```
-
-```bash
-az account set --subscription <SUBSCRIPTION-ID>
-```
-
-### Connect to the cluster
-Connect to the cluster by providing the resource group name and the cluster name
-```bash
-az aks get-credentials --resource-group TicketSystemResourceGroup --name TicketWatcher-Cluster
-```
 
 ### Deletion of config map
 If you already deployed the containers before and you just made changes, you need to clear the config maps.
@@ -75,20 +52,13 @@ kubectl create configmap grafana-dashboards \
   --from-file=app-monitoring.json=./clc3_project/grafana/dashboards/app-monitoring.json
 ```
 
-### Restarting the pods
-Now the pods can be restarted. Since there is no continous deployment, you need to change the tag of the image before restarting. For that locate the `image` section in the web app deployment of the [ticket_app.yml](../ticket_app.yml) and change it to the tag that the github action produced. 
+### Creation of secrets
 
-Once you have done this, you need to apply these changes:
-
-```bash
-kubectl apply -f ticket_app.yml
-```
-
-Additionaly, you need to create secrets. These secrets are referenced in the Kubernetes files. We need to create a secret that holds the database connection string and another secret that stores the Discord webhook for the alert notification.
+Additionally, you need to create secrets. These secrets are referenced in the Kubernetes files. We need to create a secret that holds the database connection string and another secret that stores the Discord webhook for the alert notification.
 
 ```bash
 kubectl create secret generic db-credentials \
-  --from-literal=db-url='postgresql://myadmin:MyComplexPassword123!@db:5432/postgres'
+  --from-literal=db-url='postgresql://myadmin:MySuperSecretPassword123!@ticketwatcher-db.postgres.database.azure.com:5432/postgres'
 ```
 
 ```bash
@@ -96,18 +66,62 @@ kubectl create secret generic grafana-secrets \
   --from-literal=discord-webhook="https://discord.com/api/webhooks/1466838354145316925/EneSyH-WbHYhrPY54OJscf-4JcUj7O60KlAIpDDErlMSU7oVjtsC39TVZIxbT373IUMc"
 ```
 
+
 If you want to update a secret, you have to delete it first and execute the commands from above again with the altered value.
 ```bash
 kubectl delete secrets <SECRET_NAME>
+```
+
+
+
+## Manual Orchestration
+Open the project in the devcontainer (if not already done), so that all required dependencies are available.
+
+### Login to Azure
+```bash
+az login
+```
+The browser opens up at the first time so you can log into you Microsoft account. After that, press enter in the console.
+
+### Change the subscription (if necessary)
+If the resource group is not yours, and you have only been given access to it, you need to change the subscription. For that execute the following commands:
+
+```bash
+az account list --output table
+```
+
+```bash
+az account set --subscription <SUBSCRIPTION-ID>
+```
+
+### Connect to the cluster
+Connect to the cluster by providing the resource group name and the cluster name
+```bash
+az aks get-credentials --resource-group TicketSystemResourceGroup --name TicketWatcher-Cluster
+```
+
+
+### Restarting the pods
+Now the pods can be restarted. Since there is no continuous deployment, you need to change the tag of the image before restarting. For that locate the `image` section in the web app deployment of the [ticket_app.yml](../ticket_app.yml) and change it to the tag that the github action produced. 
+
+```yaml
+spec:
+  containers:
+  - name: web
+    image: lfallmann/ticket-web:SHORT_SHA_HERE  # Update this tag
+```
+
+Once you have done this, you need to apply these changes:
+
+```bash
+kubectl apply -f ticket_app.yml
 ```
 
 After applying, you can restart the rollouts
 
 ```bash
 kubectl rollout restart deployment prometheus
-
 kubectl rollout restart deployment grafana
-
 kubectl rollout restart deployment ticket-web
 ```
 ### Checking progress
@@ -149,7 +163,7 @@ az aks stop --name TicketWatcher-Cluster --resource-group TicketSystemResourceGr
 ```
 
 ### Scaling pods
-
+Pods can be scaled manually, i.e., increase/decrease the number of pods, by executing the following command. (Hint: scaling to 0 deletes a pod)
 ```bash
 kubectl scale deployment <your-deployment-name> --replicas=N
 ```
