@@ -1,5 +1,5 @@
 # clc3-2025-project-aghaei-fallmann-steininger
-## Proposal
+## Overview
 In order to keep the Readme as concise as possible, the proposal has been moved [here](./docs/project_proposal.md) and we will only provide a quick overview:
 
 The goal is to develop a ticket sales API that simulates real-world ticketing systems, by implementing artificial delay and randomly denying request. Additionally, latency will be increased by using a database.
@@ -89,4 +89,5 @@ Although, this seemed to be a huge and complicated task upfront, the actual depl
 
 #### Switching of Database through parameterization
 The initial approach utilized a Postgres database hosted on a pod in the cluster. Later we decided to use an `Azure Database for PostgreSQL flexible server`. By providing the connection string as an environment variable stored in a Kubernetes secret, the migration was exceptionally easy and required no changes to the application code.
+
 
